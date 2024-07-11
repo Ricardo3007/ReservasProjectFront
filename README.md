@@ -4,7 +4,8 @@ sistema de reservas adecuado para servicios como restaurantes o hoteles. El sist
 ## Requisitos Previos
 
 - Angular 15
-- SQL Server
+- Visual Studio Code
+- Node
 
 
 ### FrontEnd

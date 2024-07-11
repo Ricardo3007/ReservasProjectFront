@@ -1,27 +1,21 @@
 # ReservasProject
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.11.
+sistema de reservas adecuado para servicios como restaurantes o hoteles. El sistema debe permitir a los usuarios reservar, modificar y gestionar reservas de manera eficiente
+## Requisitos Previos
 
-## Development server
+- Angular 15
+- SQL Server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+### FrontEnd
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/tuusuario/tu-repositorio.git
+   cd tu-repositorio
 
-## Build
+2. Instalar Node con npm install en la terminal luego de abrir el proyecto
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+3. Configurar el archivo environment con la url apuntando al http de la api
+ 
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

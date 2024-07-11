@@ -1,0 +1,92 @@
+<nz-page-header  >
+  <nz-page-header-title>Modulo de reservas</nz-page-header-title>
+  <nz-page-header-extra>
+      <button  nz-button nzType="primary" (click)="managerReservaModal()" class="mr-2">Crear Reserva</button>
+      <button  nz-button nzType="primary" (click)="cerrarSesion()">Cerrar sesión</button>
+
+  </nz-page-header-extra>
+
+</nz-page-header>
+
+  <div class="flex flex-col gap-3">
+    <form [formGroup]="form">
+    <div class="grid grid-cols-5 gap-2">
+      <div class="flex flex-col">
+        <label class="font-semibold">Cliente:</label>
+        <nz-select  formControlName="clienteId" nzAllowClear nzPlaceHolder="Seleccione">
+          <ng-container *ngIf="clientes | async as clientes">
+            <nz-option nzAllowClear *ngFor="let item of clientes" [nzLabel]="item.nombre" [nzValue]="item.id"></nz-option>
+          </ng-container>
+        </nz-select>
+      </div>
+
+     <div class="flex flex-col " >
+        <label class="font-semibold">Servicios:</label>
+        <nz-select formControlName="servicioId" nzAllowClear nzPlaceHolder="Seleccione" >
+          <ng-container *ngIf="servicios | async as servicios">
+          <nz-option *ngFor="let item of servicios" [nzLabel]="item.nombreServicio" [nzValue]="item.id"></nz-option>
+        </ng-container>
+        </nz-select>
+      </div>
+      <div class="flex flex-col">
+        <label class="font-semibold">Fecha Inicio :</label>
+        <nz-date-picker nzAllowClear formControlName="fechaInicio"  nzShowTime  nzShowNow  nzFormat="yyyy-MM-dd HH:mm"
+      ></nz-date-picker>
+      </div>
+      <div class="flex flex-col">
+        <label class="font-semibold">Fecha Fin :</label>
+        <nz-date-picker nzAllowClear formControlName="fechaFin"  nzShowTime  nzShowNow  nzFormat="yyyy-MM-dd HH:mm"
+      ></nz-date-picker>
+      </div>
+      <div class="flex flex-col  self-end">
+        <button *ngIf="!clicked"  nz-button nzType="primary" (click)="filtrar(true)"> <span nz-icon nzType="filter" style="vertical-align: unset;" nzTheme="outline"></span> Filtrar</button>
+        <button *ngIf="clicked"  nz-button nzType="primary" (click)="filtrar(false)"> Limpiar Filtro</button>
+      </div>
+    </div>
+  </form>
+<nz-table #basicTable [nzData]="reservas" [nzLoading]="loadingReservas" nzBordered nzSize="small" class="w-100">
+  <thead>
+    <tr>
+      <th>Cliente</th>
+      <th>Email</th>
+      <th>Telefono</th>
+      <th>Fecha inicio</th>
+      <th>Fecha fin</th>
+      <th>Servicios</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data.cliente.nombre}}</td>
+      <td>{{data.cliente.email}}</td>
+      <td>{{data.cliente.telefono}}</td>
+      <td>{{data.fechaInicio | date }}</td>
+      <td>{{data.fechaFin | date }}</td>
+      <td nzAlign="center">
+        <div class="flex gap-2 justify-center">
+        <span  nz-popover nzPopoverTitle="Detalle" [nzPopoverContent]=" contentTemplate">{{data.serviciosReservados.length}}</span>
+          <ng-template #contentTemplate>
+            <nz-list [nzDataSource]="data.serviciosReservados" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+              <ng-template #item let-item>
+                <nz-list-item>
+                  <nz-list-item-meta [nzTitle]="item.nombreServicio" [nzDescription]="item.precioReal"></nz-list-item-meta>
+                </nz-list-item>
+              </ng-template>
+            </nz-list>
+          </ng-template>
+        </div>
+      </td>
+      <td nzAlign="center">
+        <div class="flex gap-2 justify-center">
+          <span nz-icon nzType="edit" nzTheme="outline" class="cursor-pointer" (click)="managerReservaModal(data)"></span>
+        <span nz-icon nzType="close" nzTheme="outline" class="cursor-pointer"  (click)="cancelarReserva(data)"></span>
+        </div>
+
+      </td>
+
+    </tr>
+  </tbody>
+</nz-table>
+
+    </div>

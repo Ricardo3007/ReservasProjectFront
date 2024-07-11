@@ -1,0 +1,69 @@
+<div class="flex flex-col">
+<form [formGroup]="form">
+<div class="grid grid-cols-3 gap-2">
+  <div class="flex flex-col">
+    <label class="font-semibold">Cliente:</label>
+    <nz-select  formControlName="clienteId" nzPlaceHolder="Seleccione" >
+      <ng-container *ngIf="clientes | async as clientes">
+        <nz-option *ngFor="let item of clientes" [nzLabel]="item.nombre" [nzValue]="item.id"></nz-option>
+      </ng-container>
+    </nz-select>
+  </div>
+  <div class="flex flex-col">
+    <label class="font-semibold">Fecha inicio:</label>
+    <nz-date-picker formControlName="fechaInicio" nzShowTime  nzShowNow
+    nzFormat="yyyy-MM-dd HH:mm"
+  ></nz-date-picker>
+  </div>
+  <div class="flex flex-col">
+    <label class="font-semibold">Fecha fin:</label>
+    <nz-date-picker formControlName="fechaFin" nzShowTime  nzShowNow  nzFormat="yyyy-MM-dd HH:mm"
+  ></nz-date-picker>
+  </div>
+  <div class="flex flex-col " >
+    <label class="font-semibold">Servicios:</label>
+    <nz-select formControlName="servicio" nzPlaceHolder="Seleccione">
+      <ng-container *ngIf="servicios | async as servicios">
+      <nz-option *ngFor="let item of servicios" [nzLabel]="item.nombreServicio" [nzValue]="item"></nz-option>
+    </ng-container>
+    </nz-select>
+  </div>
+  <div class="flex flex-col" *ngIf="form.value.servicio &&form.value.servicio.tipoServicio?.isHabitacion">
+    <label class="font-semibold"># Habitación:</label>
+    <nz-select formControlName="habitacion">
+      <ng-container *ngIf="habitaciones | async as habitaciones">
+      <nz-option *ngFor="let item of habitaciones" [nzLabel]="item.numeroCuarto" [nzValue]="item"></nz-option>
+    </ng-container>
+    </nz-select>
+  </div>
+  <div class="flex flex-col  self-end">
+    <button nz-button nzType="primary" (click)="agregarTablaTemporal()">Agregar</button>
+  </div>
+  <div class="col-span-3">
+    <nz-table #basicTable [nzData]="form.value.serviciosReservados" nzBordered nzSize="small" class="w-100">
+      <thead>
+        <tr>
+          <th>Servicio</th>
+          <th>Valor</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data;let i=index">
+          <td class="py-0">{{data.nombreServicio +' '+ (data.habitacion?data.habitacion.numeroCuarto:'')}}</td>
+          <td class="py-0">{{data.precioReal}}</td>
+          <td class="py-0" nzAlign="center"><span class="cursor-pointer" nz-icon nzType="delete" nzTheme="outline" (click)="eliminarDeTablaTemporal(i)"></span></td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div class="flex gap-2 mt-3 justify-end">Total: {{totalServiciosReservados}}</div>
+  </div>
+</div>
+</form>
+<div class="flex gap-2 mt-3 justify-end ">
+  <button nz-button nzType="primary" (click)="cancelar()"  [nzLoading]="loadingManager">Cancelar</button>
+  <button *ngIf="!nzData" nz-button nzType="primary" (click)="guardar()" [disabled]="form.invalid" [nzLoading]="loadingManager">Aceptar</button>
+  <button *ngIf="nzData" nz-button nzType="primary" (click)="editar()" [disabled]="form.invalid" [nzLoading]="loadingManager">Actualizar</button>
+
+</div>
+</div>
